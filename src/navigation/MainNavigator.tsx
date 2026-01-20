@@ -4,6 +4,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Text, StyleSheet } from 'react-native';
 import { HomeScreen } from '../screens/main';
 import { AddChildScreen } from '../screens/main/children/AddChildScreen';
+import { SelectInterestsScreen } from '../screens/main/children/SelectInterestsScreen';
+import { SelectTraitsScreen } from '../screens/main/children/SelectTraitsScreen';
 import type { MainStackParamList, MainTabParamList } from '../types';
 import { colors, spacing } from '../theme';
 
@@ -87,6 +89,22 @@ export function MainNavigator() {
         options={{
           presentation: 'modal',
           animation: 'slide_from_bottom',
+        }}
+      />
+      <Stack.Screen
+        name="SelectInterests"
+        component={SelectInterestsScreen}
+        options={{
+          presentation: 'modal',
+          animation: 'slide_from_right',
+        }}
+      />
+      <Stack.Screen
+        name="SelectTraits"
+        component={SelectTraitsScreen}
+        options={{
+          presentation: 'modal',
+          animation: 'slide_from_right',
         }}
       />
     </Stack.Navigator>

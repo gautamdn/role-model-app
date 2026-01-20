@@ -16,6 +16,7 @@ export interface Child {
   name: string;
   birth_date: string | null;
   interests: string[];
+  focus_traits: string[];
   avatar_url: string | null;
   created_at: string;
   updated_at: string;

@@ -10,7 +10,7 @@ interface ChildState {
 
   // Actions
   fetchChildren: () => Promise<void>;
-  addChild: (child: Omit<Child, 'id' | 'parent_id' | 'created_at' | 'updated_at'>) => Promise<{ error: string | null }>;
+  addChild: (child: Omit<Child, 'id' | 'parent_id' | 'created_at' | 'updated_at'>) => Promise<{ error: string | null; childId?: string }>;
   updateChild: (id: string, updates: Partial<Child>) => Promise<{ error: string | null }>;
   deleteChild: (id: string) => Promise<{ error: string | null }>;
   selectChild: (child: Child | null) => void;
@@ -75,6 +75,7 @@ export const useChildStore = create<ChildState>((set, get) => ({
           name: childData.name,
           birth_date: childData.birth_date,
           interests: childData.interests || [],
+          focus_traits: childData.focus_traits || [],
           avatar_url: childData.avatar_url,
         })
         .select()
@@ -94,7 +95,7 @@ export const useChildStore = create<ChildState>((set, get) => ({
         isLoading: false,
       });
 
-      return { error: null };
+      return { error: null, childId: newChild.id };
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Failed to add child';
       set({ isLoading: false, error: message });

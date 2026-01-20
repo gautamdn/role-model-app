@@ -7,3 +7,4 @@ export {
   AddChildCard,
   AddChildCardCompact,
 } from './ChildProfileCard';
+export { TraitBadge, TraitProgressCard } from './TraitBadge';

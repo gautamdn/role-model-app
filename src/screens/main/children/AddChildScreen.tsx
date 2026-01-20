@@ -57,13 +57,19 @@ export function AddChildScreen({ navigation }: AddChildScreenProps) {
       name: name.trim(),
       birth_date: birthDate,
       interests: [],
+      focus_traits: [],
       avatar_url: null,
     });
 
     if (result.error) {
       Alert.alert('Error', result.error);
-    } else {
-      navigation.goBack();
+    } else if (result.childId) {
+      // Navigate to interests selection for the new child
+      navigation.replace('SelectInterests', {
+        childId: result.childId,
+        childName: name.trim(),
+        isNewChild: true,
+      });
     }
   };
 
