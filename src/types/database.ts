@@ -14,12 +14,11 @@ export interface Child {
   id: string;
   parent_id: string;
   name: string;
-  age: number;
+  birth_date: string | null;
   interests: string[];
-  strengths: string[];
-  growth_areas: string[];
-  avatar_url?: string;
+  avatar_url: string | null;
   created_at: string;
+  updated_at: string;
 }
 
 export interface CharacterTrait {

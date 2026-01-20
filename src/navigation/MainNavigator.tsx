@@ -1,10 +1,13 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Text, StyleSheet } from 'react-native';
 import { HomeScreen } from '../screens/main';
-import type { MainTabParamList } from '../types';
+import { AddChildScreen } from '../screens/main/children/AddChildScreen';
+import type { MainStackParamList, MainTabParamList } from '../types';
 import { colors, spacing } from '../theme';
 
+const Stack = createNativeStackNavigator<MainStackParamList>();
 const Tab = createBottomTabNavigator<MainTabParamList>();
 
 // Placeholder screens for tabs
@@ -28,7 +31,7 @@ function PlaceholderScreen({ title, emoji }: { title: string; emoji: string }) {
   );
 }
 
-export function MainNavigator() {
+function HomeTabs() {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -66,6 +69,27 @@ export function MainNavigator() {
       <Tab.Screen name="Progress" component={ProgressScreen} />
       <Tab.Screen name="Settings" component={SettingsScreen} />
     </Tab.Navigator>
+  );
+}
+
+export function MainNavigator() {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false,
+        contentStyle: { backgroundColor: colors.background.primary },
+      }}
+    >
+      <Stack.Screen name="HomeTabs" component={HomeTabs} />
+      <Stack.Screen
+        name="AddChild"
+        component={AddChildScreen}
+        options={{
+          presentation: 'modal',
+          animation: 'slide_from_bottom',
+        }}
+      />
+    </Stack.Navigator>
   );
 }
 

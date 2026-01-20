@@ -13,6 +13,15 @@ export type AuthStackParamList = {
   ForgotPassword: undefined;
 };
 
+export type MainStackParamList = {
+  HomeTabs: undefined;
+  AddChild: undefined;
+  EditChild: { childId: string };
+  StoryDetail: { storyId: string };
+  ActivityDetail: { activityId: string };
+  RoleModelProfile: { roleModelId: string };
+};
+
 export type MainTabParamList = {
   Home: undefined;
   Explore: undefined;
