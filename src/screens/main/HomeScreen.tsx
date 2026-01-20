@@ -2,9 +2,9 @@ import React, { useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { Screen, Button, ChildProfileCardCompact, AddChildCardCompact, TraitBadge } from '../../components';
-import { getTraitById } from '../../constants';
-import { useAuthStore, useChildStore } from '../../services';
+import { Screen, Button, ChildProfileCardCompact, AddChildCardCompact, TraitBadge, StoryCardFeatured, ActivityCardFeatured } from '../../components';
+import { getTraitById, getRoleModelById } from '../../constants';
+import { useAuthStore, useChildStore, useStoryStore, useActivityStore } from '../../services';
 import { colors, spacing, textStyles, borderRadius } from '../../theme';
 import type { MainStackParamList } from '../../types';
 
@@ -14,10 +14,27 @@ export function HomeScreen() {
   const navigation = useNavigation<HomeScreenNavProp>();
   const { user, signOut } = useAuthStore();
   const { children, selectedChild, isLoading, fetchChildren, selectChild } = useChildStore();
+  const { todayStory, getTodayStory } = useStoryStore();
+  const { todayActivity, getTodayActivity } = useActivityStore();
 
   useEffect(() => {
     fetchChildren();
   }, []);
+
+  // Get today's story and activity when selected child changes
+  useEffect(() => {
+    if (selectedChild) {
+      getTodayStory(
+        selectedChild.interests || [],
+        selectedChild.focus_traits || [],
+        selectedChild.birth_date
+      );
+      getTodayActivity(
+        selectedChild.focus_traits || [],
+        selectedChild.birth_date
+      );
+    }
+  }, [selectedChild?.id]);
 
   const handleAddChild = () => {
     navigation.navigate('AddChild');
@@ -40,6 +57,18 @@ export function HomeScreen() {
         childName: selectedChild.name,
         isNewChild: false,
       });
+    }
+  };
+
+  const handleStoryPress = () => {
+    if (todayStory) {
+      navigation.navigate('StoryDetail', { storyId: todayStory.id });
+    }
+  };
+
+  const handleActivityPress = () => {
+    if (todayActivity) {
+      navigation.navigate('ActivityDetail', { activityId: todayActivity.id });
     }
   };
 
@@ -219,35 +248,49 @@ export function HomeScreen() {
               )}
             </View>
 
+            {/* Today's Story */}
             <View style={styles.section}>
-              <Text style={styles.sectionTitle}>Today's Story</Text>
-              <TouchableOpacity style={styles.storyCard}>
-                <View style={styles.storyPlaceholder}>
-                  <Text style={styles.placeholderEmoji}>📚</Text>
-                  <Text style={styles.placeholderText}>
-                    Stories coming soon!
-                  </Text>
-                  <Text style={styles.placeholderHint}>
-                    We're adding inspiring role models for{' '}
-                    {selectedChild.name}
-                  </Text>
-                </View>
-              </TouchableOpacity>
+              {todayStory ? (
+                <StoryCardFeatured story={todayStory} onPress={handleStoryPress} />
+              ) : (
+                <>
+                  <Text style={styles.sectionTitle}>Today's Story</Text>
+                  <TouchableOpacity style={styles.storyCard}>
+                    <View style={styles.storyPlaceholder}>
+                      <Text style={styles.placeholderEmoji}>📚</Text>
+                      <Text style={styles.placeholderText}>
+                        Stories coming soon!
+                      </Text>
+                      <Text style={styles.placeholderHint}>
+                        We're adding inspiring role models for{' '}
+                        {selectedChild.name}
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                </>
+              )}
             </View>
 
+            {/* Today's Activity */}
             <View style={styles.section}>
-              <Text style={styles.sectionTitle}>Today's Activity</Text>
-              <TouchableOpacity style={styles.activityCard}>
-                <View style={styles.activityPlaceholder}>
-                  <Text style={styles.placeholderEmoji}>🎯</Text>
-                  <Text style={styles.placeholderText}>
-                    Activities coming soon!
-                  </Text>
-                  <Text style={styles.placeholderHint}>
-                    Fun character-building exercises await
-                  </Text>
-                </View>
-              </TouchableOpacity>
+              {todayActivity ? (
+                <ActivityCardFeatured activity={todayActivity} onPress={handleActivityPress} />
+              ) : (
+                <>
+                  <Text style={styles.sectionTitle}>Today's Activity</Text>
+                  <TouchableOpacity style={styles.activityCard}>
+                    <View style={styles.activityPlaceholder}>
+                      <Text style={styles.placeholderEmoji}>🎯</Text>
+                      <Text style={styles.placeholderText}>
+                        Activities coming soon!
+                      </Text>
+                      <Text style={styles.placeholderHint}>
+                        Fun character-building exercises await
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                </>
+              )}
             </View>
 
             <View style={styles.section}>

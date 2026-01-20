@@ -6,6 +6,8 @@ import { HomeScreen } from '../screens/main';
 import { AddChildScreen } from '../screens/main/children/AddChildScreen';
 import { SelectInterestsScreen } from '../screens/main/children/SelectInterestsScreen';
 import { SelectTraitsScreen } from '../screens/main/children/SelectTraitsScreen';
+import { StoryDetailScreen } from '../screens/main/stories/StoryDetailScreen';
+import { ActivityDetailScreen } from '../screens/main/activities/ActivityDetailScreen';
 import type { MainStackParamList, MainTabParamList } from '../types';
 import { colors, spacing } from '../theme';
 
@@ -105,6 +107,22 @@ export function MainNavigator() {
         options={{
           presentation: 'modal',
           animation: 'slide_from_right',
+        }}
+      />
+      <Stack.Screen
+        name="StoryDetail"
+        component={StoryDetailScreen}
+        options={{
+          presentation: 'fullScreenModal',
+          animation: 'slide_from_bottom',
+        }}
+      />
+      <Stack.Screen
+        name="ActivityDetail"
+        component={ActivityDetailScreen}
+        options={{
+          presentation: 'fullScreenModal',
+          animation: 'slide_from_bottom',
         }}
       />
     </Stack.Navigator>

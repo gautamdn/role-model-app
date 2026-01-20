@@ -8,3 +8,5 @@ export {
   AddChildCardCompact,
 } from './ChildProfileCard';
 export { TraitBadge, TraitProgressCard } from './TraitBadge';
+export { StoryCard, StoryCardFeatured } from './StoryCard';
+export { ActivityCard, ActivityCardFeatured } from './ActivityCard';

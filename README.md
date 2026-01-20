@@ -4,10 +4,12 @@ A character development app for children ages 5-17 that helps them learn from in
 
 ## Current Status
 
-**Phase:** Week 2 of 14 (MVP)
-**Last Updated:** 2026-01-19
+**Phase:** Week 6 of 14 (MVP)
+**Last Updated:** 2026-01-20
 
 ### Completed
+
+**Week 1-2: Foundation**
 - [x] React Native + Expo project setup
 - [x] TypeScript configuration
 - [x] Navigation structure (Stack + Bottom Tabs)
@@ -17,14 +19,41 @@ A character development app for children ages 5-17 that helps them learn from in
 - [x] Authentication (sign up, login, password reset)
 - [x] Welcome/onboarding screens
 
+**Week 3: Interests Selection**
+- [x] Interest categories (Sports, Arts, Science, Lifestyle)
+- [x] 24 interest options with emoji icons
+- [x] Multi-select flow for child interests
+- [x] Interest-to-trait mapping system
+
+**Week 4: Character Traits**
+- [x] 8 character traits (perseverance, kindness, creativity, leadership, discipline, curiosity, courage, integrity)
+- [x] Trait selection screen with recommendations based on interests
+- [x] TraitBadge and TraitProgressCard components
+- [x] Focus traits storage in database
+
+**Week 5: Story System**
+- [x] 8 sample stories with inspiring role models
+- [x] Paginated story reader interface
+- [x] Key lessons and discussion questions
+- [x] Age-appropriate content filtering (kids/tweens/teens)
+- [x] StoryCard and StoryCardFeatured components
+- [x] Zustand store for daily story selection
+
+**Week 6: Activity System**
+- [x] 14 character-building activities
+- [x] 5-step activity flow (intro → instructions → doing → reflection → complete)
+- [x] Materials list and tips for success
+- [x] ActivityCard and ActivityCardFeatured components
+- [x] Zustand store for daily activity selection
+
 ### In Progress
-- [ ] Child profile management
-- [ ] Home screen dashboard
+- [ ] Explore tab (browse all stories and activities)
+- [ ] Progress tracking
 
 ### Next Up
-- Character trait selection
-- Story viewing interface
-- Content creation (role models, stories)
+- Week 7: Progress tracking and badges
+- Week 8: Settings and preferences
+- Week 9: Content expansion
 
 ## Tech Stack
 
@@ -111,32 +140,67 @@ DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
 CREATE TRIGGER on_auth_user_created
   AFTER INSERT ON auth.users
   FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
+
+-- Child profiles table
+CREATE TABLE IF NOT EXISTS child_profiles (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  name TEXT NOT NULL,
+  birth_date DATE,
+  interests TEXT[] DEFAULT '{}',
+  focus_traits TEXT[] DEFAULT '{}',
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+ALTER TABLE child_profiles ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Users can read own children" ON child_profiles FOR SELECT USING (auth.uid() = user_id);
+CREATE POLICY "Users can insert own children" ON child_profiles FOR INSERT WITH CHECK (auth.uid() = user_id);
+CREATE POLICY "Users can update own children" ON child_profiles FOR UPDATE USING (auth.uid() = user_id);
+CREATE POLICY "Users can delete own children" ON child_profiles FOR DELETE USING (auth.uid() = user_id);
 ```
 
 ## Project Structure
 
 ```
 src/
-├── components/       # Reusable UI components
+├── components/           # Reusable UI components
 │   ├── Button.tsx
 │   ├── Input.tsx
-│   └── Screen.tsx
-├── navigation/       # Navigation configuration
+│   ├── Screen.tsx
+│   ├── ChildCard.tsx
+│   ├── TraitBadge.tsx
+│   ├── StoryCard.tsx
+│   └── ActivityCard.tsx
+├── constants/            # App content and data
+│   ├── interests.ts      # 24 interest options
+│   ├── traits.ts         # 8 character traits
+│   ├── stories.ts        # 8 sample stories
+│   └── activities.ts     # 14 activities
+├── navigation/           # Navigation configuration
 │   ├── AuthNavigator.tsx
 │   ├── MainNavigator.tsx
 │   └── RootNavigator.tsx
-├── screens/          # App screens
-│   ├── auth/         # Authentication screens
-│   └── main/         # Main app screens
-├── services/         # API and state management
+├── screens/              # App screens
+│   ├── auth/             # Authentication screens
+│   └── main/             # Main app screens
+│       ├── HomeScreen.tsx
+│       ├── children/     # Child management
+│       ├── stories/      # Story viewing
+│       └── activities/   # Activity completion
+├── services/             # API and state management
 │   ├── supabase.ts
-│   └── authStore.ts
-├── theme/            # Design system
+│   ├── authStore.ts
+│   ├── childStore.ts
+│   ├── storyStore.ts
+│   └── activityStore.ts
+├── theme/                # Design system
 │   ├── colors.ts
 │   ├── typography.ts
 │   └── spacing.ts
-├── types/            # TypeScript types
-└── utils/            # Utility functions
+├── types/                # TypeScript types
+└── utils/                # Utility functions
 ```
 
 ## Documentation
