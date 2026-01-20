@@ -32,7 +32,7 @@ export function Input({
   const [isFocused, setIsFocused] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
-  const isPassword = secureTextEntry !== undefined;
+  const isPassword = secureTextEntry === true;
 
   return (
     <View style={[styles.container, containerStyle]}>
@@ -41,8 +41,8 @@ export function Input({
       <View
         style={[
           styles.inputContainer,
-          isFocused && styles.inputContainerFocused,
-          error && styles.inputContainerError,
+          isFocused ? styles.inputContainerFocused : undefined,
+          error ? styles.inputContainerError : undefined,
         ]}
       >
         {leftIcon && <View style={styles.leftIcon}>{leftIcon}</View>}
@@ -50,13 +50,13 @@ export function Input({
         <TextInput
           style={[
             styles.input,
-            !!leftIcon && styles.inputWithLeftIcon,
-            !!(rightIcon || isPassword) && styles.inputWithRightIcon,
+            leftIcon ? styles.inputWithLeftIcon : undefined,
+            (rightIcon || isPassword) ? styles.inputWithRightIcon : undefined,
           ]}
           placeholderTextColor={colors.neutral[400]}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
-          secureTextEntry={isPassword && !showPassword}
+          secureTextEntry={isPassword ? !showPassword : false}
           {...props}
         />
 
@@ -76,8 +76,8 @@ export function Input({
         )}
       </View>
 
-      {error && <Text style={styles.error}>{error}</Text>}
-      {helper && !error && <Text style={styles.helper}>{helper}</Text>}
+      {error ? <Text style={styles.error}>{error}</Text> : null}
+      {helper && !error ? <Text style={styles.helper}>{helper}</Text> : null}
     </View>
   );
 }

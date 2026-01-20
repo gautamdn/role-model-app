@@ -101,7 +101,6 @@ export function ForgotPasswordScreen({ navigation }: ForgotPasswordScreenProps) 
             placeholder="your@email.com"
             keyboardType="email-address"
             autoCapitalize="none"
-            autoComplete="email"
           />
 
           <Button

@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
   },
   logoText: {
     fontSize: 40,
-    fontWeight: 'bold',
+    fontWeight: '700',
     color: colors.neutral[0],
   },
   title: {

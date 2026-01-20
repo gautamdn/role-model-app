@@ -33,16 +33,16 @@ export function Button({
   const buttonStyles = [
     styles.base,
     styles[variant],
-    styles[`size_${size}`],
-    disabled && styles.disabled,
+    styles[`size_${size}` as keyof typeof styles],
+    disabled ? styles.disabled : undefined,
     style,
   ];
 
   const textStyles_ = [
     styles.text,
-    styles[`text_${variant}`],
-    styles[`textSize_${size}`],
-    disabled && styles.textDisabled,
+    styles[`text_${variant}` as keyof typeof styles],
+    styles[`textSize_${size}` as keyof typeof styles],
+    disabled ? styles.textDisabled : undefined,
     textStyle,
   ];
 

@@ -6,8 +6,8 @@ import {
   KeyboardAvoidingView,
   Platform,
   ViewStyle,
+  SafeAreaView,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { colors, spacing } from '../theme';
 
 interface ScreenProps {
@@ -16,7 +16,6 @@ interface ScreenProps {
   keyboardAvoiding?: boolean;
   style?: ViewStyle;
   contentStyle?: ViewStyle;
-  safeAreaEdges?: ('top' | 'bottom' | 'left' | 'right')[];
 }
 
 export function Screen({
@@ -25,7 +24,6 @@ export function Screen({
   keyboardAvoiding = true,
   style,
   contentStyle,
-  safeAreaEdges = ['top', 'bottom'],
 }: ScreenProps) {
   const content = scrollable ? (
     <ScrollView
@@ -52,7 +50,7 @@ export function Screen({
   );
 
   return (
-    <SafeAreaView style={[styles.container, style]} edges={safeAreaEdges}>
+    <SafeAreaView style={[styles.container, style]}>
       {wrappedContent}
     </SafeAreaView>
   );

@@ -68,7 +68,6 @@ export function LoginScreen({ navigation }: LoginScreenProps) {
             placeholder="your@email.com"
             keyboardType="email-address"
             autoCapitalize="none"
-            autoComplete="email"
           />
 
           <Input
@@ -80,8 +79,7 @@ export function LoginScreen({ navigation }: LoginScreenProps) {
             }}
             error={errors.password}
             placeholder="Enter your password"
-            secureTextEntry
-            autoComplete="password"
+            secureTextEntry={true}
           />
 
           <TouchableOpacity

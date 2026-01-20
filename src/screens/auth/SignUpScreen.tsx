@@ -91,7 +91,6 @@ export function SignUpScreen({ navigation }: SignUpScreenProps) {
             placeholder="your@email.com"
             keyboardType="email-address"
             autoCapitalize="none"
-            autoComplete="email"
           />
 
           <Input
@@ -104,8 +103,7 @@ export function SignUpScreen({ navigation }: SignUpScreenProps) {
             error={errors.password}
             helper="At least 8 characters"
             placeholder="Create a password"
-            secureTextEntry
-            autoComplete="new-password"
+            secureTextEntry={true}
           />
 
           <Input
@@ -118,8 +116,7 @@ export function SignUpScreen({ navigation }: SignUpScreenProps) {
             }}
             error={errors.confirmPassword}
             placeholder="Confirm your password"
-            secureTextEntry
-            autoComplete="new-password"
+            secureTextEntry={true}
           />
 
           <Text style={styles.terms}>
